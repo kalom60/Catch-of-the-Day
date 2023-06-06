@@ -10,7 +10,7 @@ datasource db {
   url      = env("MONGO_URI")
 }
 
-model Dish {
+model dishes {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   name   String @unique
   price  Int
