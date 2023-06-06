@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
+require("express-async-errors");
 
 import prisma from "./prisma/prisma";
 import router from "./router";
+import errorHandlerMiddleware from "./middlewares/errorHandler";
 
 const app = express();
 const PORT = 5000;
@@ -10,6 +12,7 @@ const PORT = 5000;
 app.use(express.json());
 app.use(cors());
 app.use(router);
+app.use(errorHandlerMiddleware);
 
 async function checkDBConnection() {
   try {

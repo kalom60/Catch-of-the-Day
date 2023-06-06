@@ -1,49 +1,52 @@
 import prisma from "../prisma/prisma";
+require("express-async-errors");
 
 class DishModel {
   static async createDish(value) {
-    try {
-      const dish = await prisma.dishes.create({
-        data: value,
-      });
-      return dish;
-    } catch (err) {
-      console.log(err);
-    }
+    const dish = await prisma.dishes.create({
+      data: value,
+    });
+    return dish;
   }
 
   static async getAllDishes() {
-    try {
-      const dishes = await prisma.dishes.findMany();
-      return dishes;
-    } catch (err) {
-      console.log(err);
-    }
+    const dishes = await prisma.dishes.findMany();
+    return dishes;
   }
 
   static async updateDish(id, value) {
-    try {
-      const dish = await prisma.dishes.update({
-        where: {
-          id,
-        },
-        data: value,
-      });
-      return dish;
-    } catch (err) {
-      console.log(err);
+    const checkDish = await prisma.dishes.findUnique({
+      where: { id },
+    });
+    if (!dish) {
+      const error = new Error("Dish not found");
+      error.statusCode = 404;
+      throw error;
     }
+
+    const dish = await prisma.dishes.update({
+      where: {
+        id,
+      },
+      data: value,
+    });
+
+    return dish;
   }
 
   static async deleteDish(id) {
-    try {
-      const dish = await prisma.dishes.delete({
-        where: { id },
-      });
-      return dish;
-    } catch (err) {
-      console.log(err);
+    const dish = await prisma.dishes.findUnique({
+      where: { id },
+    });
+    if (!dish) {
+      const error = new Error("Dish not found");
+      error.statusCode = 404;
+      throw error;
     }
+
+    await prisma.dishes.delete({ where: { id } });
+
+    return true;
   }
 }
 
