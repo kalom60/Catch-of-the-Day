@@ -11,10 +11,10 @@ datasource db {
 }
 
 model dishes {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name   String @unique
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String  @unique
   price  Int
   status String
   desc   String
-  image  String
+  image  String?
 }

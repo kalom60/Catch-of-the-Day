@@ -12,12 +12,12 @@ class DishController {
   }
 
   static async updateDish(req, res) {
-    const dish = await DishModel.updateDish(req.params, req.body);
+    const dish = await DishModel.updateDish(req.params.id, req.body);
     res.json(dish);
   }
 
   static async deleteDish(req, res) {
-    const dish = await DishModel.deleteDish(req.params);
+    const dish = await DishModel.deleteDish(req.params.id);
     res.json(dish);
   }
 }
